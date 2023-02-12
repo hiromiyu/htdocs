@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$finfo = new finfo();
+
 $form = [
     'name' => '',
     'email' => '',
@@ -35,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 画像のチェック
     $image = $_FILES['image'];
     if ($image['name'] !== '' && $image['error'] === 0) {
-        $type = mime_content_type($image['tmp_name']);
+        $type = $finfo->file($image['tmp_name'], FILEINFO_MIME_TYPE);
         if ($type !== 'image/png' && $type !== 'image/jpeg') {
             $error['image'] = 'type';
         }
