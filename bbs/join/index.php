@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('../library.php');
 
 $finfo = new finfo();
 
@@ -10,10 +11,7 @@ $form = [
 ];
 $error = [];
 
-/* htmlspecialcharsを短くする */
-function h($vulue) {
-    return htmlspecialchars($vulue, ENT_QUOTES);
-}
+
 
 /* フォームの内容をチェック */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
