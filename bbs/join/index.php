@@ -4,11 +4,15 @@ require('../library.php');
 
 $finfo = new finfo();
 
-$form = [
-    'name' => '',
-    'email' => '',
-    'password' => '',
-];
+if (isset($_GET['action']) && $_GET['action'] === 'rewrite' && isset($_SESSION['form'])) {
+    $form = $_SESSION['form'];
+} else {
+    $form = [
+        'name' => '',
+        'email' => '',
+        'password' => '',
+    ];
+}
 $error = [];
 
 
