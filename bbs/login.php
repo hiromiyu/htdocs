@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('library.php');
 
 $error = [];
@@ -26,7 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_result($id, $name, $hash);
         $stmt->fetch();
 
-        var_dump($hash);
+        if (password_verify($password, $hash)) {
+            // ログイン成功
+            session_regenerate_id();
+            $_SESSION['id'] = $id;
+            $_SESSION['name'] = $name;
+            header('Location: index.php');
+            exit();
+        } else {
+            $error['login'] = 'failed';
+        }
     }
 }
 ?>
@@ -58,7 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php if (isset($error['login']) && $error['login'] === 'blank'): ?>
                         <p class="error">* メールアドレスとパスワードをご記入ください</p>
                     <?php endif; ?>
-                    <p class="error">* ログインに失敗しました。正しくご記入ください。</p>
+                    <?php if (isset($error['login']) && $error['login'] === 'failed'): ?>
+                        <p class="error">* ログインに失敗しました。正しくご記入ください。</p>
+                    <?php endif; ?>    
                 </dd>
                 <dt>パスワード</dt>
                 <dd>
